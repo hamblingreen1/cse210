@@ -126,8 +126,8 @@ class Program
 		// Iterate through entry list, displaying each entry
 		foreach (Entry entry in journal.Entries)
 		{
-			Console.WriteLine($"Date: {entry.Date} -- Prompt: {entry.Prompt}");
-			Console.WriteLine($"Response: {entry.Response}");
+			Console.WriteLine($"Date: {entry._date} -- Prompt: {entry._prompt}");
+			Console.WriteLine($"Response: {entry._response}");
 			Console.WriteLine();
 		}
 	}
@@ -152,7 +152,7 @@ class Program
 			foreach (Entry entry in journal.Entries)
 			{
 				// Save entry to file
-				writer.WriteLine($"{entry.Date}|{entry.Prompt}|{entry.Response}");
+				writer.WriteLine($"{entry._date}|{entry._prompt}|{entry._response}");
 			}
 		}
 	}

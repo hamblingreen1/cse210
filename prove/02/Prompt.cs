@@ -17,9 +17,9 @@ public class Prompt
 	{
 		// Get random prompt
 		Random random = new Random();
-		int promptIndex = random.Next(prompts.Count);
-		string prompt = prompts[promptIndex];
+		int _promptIndex = random.Next(prompts.Count);
+		string _prompt = prompts[_promptIndex];
 
-		return prompt;
+		return _prompt;
 	}
 }
