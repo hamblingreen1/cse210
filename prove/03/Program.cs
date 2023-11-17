@@ -8,7 +8,13 @@
 *   Easy corresponds to 3 words hidden,	*
 *   Medium is 6, and Hard is 10. Type	*
 *   "quit" to exit the program		*
-* Creativity: 				*
+* Creativity: I added a difficulty menu	*
+*   that adjusts how many words are	*
+*   hidden per round depending on the	*
+*   difficulty selected. I also added a *
+*   customized congratulations message	*
+*   containing the scripture reference	*
+*   when the scripture is hidden	*
 ****************************************/
 
 using System;
@@ -73,9 +79,12 @@ class Program
 			scripture.HideRandomWords(wordsToHide);
 		}
 
+		if (scripture.IsCompletelyHidden())
+		{
 			// Print final hidden scripture
 			Console.WriteLine(reference.GetDisplayText() + " " + scripture.GetDisplayText());
 			Console.WriteLine();
 			Console.WriteLine($"Congratulations! You've memorized {reference.GetDisplayText()}");
+		}
 	}
 }
