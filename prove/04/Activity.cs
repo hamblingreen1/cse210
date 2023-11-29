@@ -5,7 +5,7 @@ public class Activity
 	// Define protected variables
 	protected string _name;
 	protected string _description;
-	protected int _duration;
+	protected int _duration = 0;
 
 	public void DisplayStartingMessage()
 	{
@@ -14,27 +14,37 @@ public class Activity
 		Console.WriteLine($"Welcome to the {_name} Activity.");
 		Console.WriteLine();
 		Console.WriteLine(_description);
-		Console.WriteLine();
-		Console.Write($"How long, in seconds, would you like for your session? ");
-		_duration = Int32.Parse(Console.ReadLine());
+
+		while (_duration == 0)
+		{
+			Console.WriteLine();
+			Console.Write($"How long, in seconds, would you like for your session? ");
+			_duration = Int32.Parse(Console.ReadLine());
+			if (_duration <= 0)
+			{
+				Console.WriteLine();
+				Console.WriteLine("Your session duration must be positive and non-zero");
+			}
+		}
+
 		Console.WriteLine();
 
 		// Display message to get ready
 		Console.Clear();
-		Console.WriteLine($"Get ready...");
+		Console.Write($"Get ready...");
+		ShowTimer(5);
 		Console.WriteLine();
-		Thread.Sleep(3000); // Pause for 3 seconds
 	}
 
 	public void DisplayEndingMessage()
 	{
 		// Display closing message
 		Console.WriteLine();
-		Console.WriteLine("Well done!!");
+		Console.Write("Well done!! ");
+		ShowTimer(5);
 		Console.WriteLine();
-		Console.Sleep(5000);
-		Console.WriteLine($"You have completed {_duration} seconds of the {_name} Activity.");
-		Console.Sleep(5000);
+		Console.Write($"You have completed {_duration} seconds of the {_name} Activity...");
+		ShowTimer(5);
 	}
 
 	// Countdown timer for number of seconds specified
@@ -46,6 +56,8 @@ public class Activity
 			Thread.Sleep(1000); // Pause for 1 second
 			Console.Write("\b \b"); // Remove the last character
 		}
+
+		Console.WriteLine();
 	}
 }
 

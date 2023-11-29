@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
 
 public class ListingActivity : Activity
 {
@@ -20,14 +16,13 @@ public class ListingActivity : Activity
 
 		// Display random prompt
 		GetRandomPrompt();
-		Thread.Sleep(3000);
 		
 		// Get list from user
-		List<string> items = GetListFromUser();
+		List<string> _responses = GetListFromUser();
 		
-		// Display number of items counted
+		// Display number of _responses counted
+		Console.Write($"You listed {_responses.Count} items! ");
 		Console.WriteLine();
-		Console.WriteLine($"You listed {items.Count} items!");
 
 		// Display ending message
 		DisplayEndingMessage();
@@ -50,21 +45,15 @@ public class ListingActivity : Activity
 		string prompt = _prompts[random.Next(_prompts.Count)];
 
 		// Display prompt
-		Console.WriteLine("Consider the following prompt:");
-		Console.WriteLine();
+		Console.WriteLine("List as many responses as you can to the following prompt:");
 		Console.WriteLine($"--- {prompt} ---");
-		Console.WriteLine();
-		Console.WriteLine("When you have something in mind, press enter to continue.");
-		Console.WriteLine();
-
-		// Pause and wait for user to press enter
-		Console.ReadLine();
-		Console.Clear();
+		Console.Write("You may begin in: ");
+		ShowTimer(9);
 	}
 
 	public List<string> GetListFromUser()
 	{
-		List<string> items = new List<string>();
+		List<string> _responses = new List<string>();
 		string input;
 
 		DateTime currentTime = DateTime.Now;
@@ -72,13 +61,16 @@ public class ListingActivity : Activity
 
 		while (currentTime < futureTime)
 		{
+			Console.Write("> ");
 			input = Console.ReadLine();
 
 			// Update time
 			currentTime = DateTime.Now;
-			items.Add(input);
+
+			// Append input to responses
+			_responses.Add(input);
 		}
 
-		return items;
+		return _responses;
 	}
 }

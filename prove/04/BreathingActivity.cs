@@ -20,9 +20,9 @@ public class BreathingActivity : Activity
 		while (currentTime < futureTime)
 		{
 			// Display breathing messages
-			Console.WriteLine("Breathe in...");
+			Console.Write("Breathe in...");
 			ShowTimer(4);
-			Console.WriteLine("Now breathe out...");
+			Console.Write("Now breathe out...");
 			ShowTimer(6);
 			Console.WriteLine();
 

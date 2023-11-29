@@ -1,3 +1,18 @@
+/****************************************
+* mindfulness -- take a break		*
+* Author: Bobby Hamblin			*
+*   <hamblingreen@hotmail.com>		*
+* Purpose: Demonstate an application of	*
+*   inheritance				*
+* Usage: Choose activity at menu and	*
+*   follow instructions			*
+* Creativity: I added a check to make	*
+*   sure the session duration is more	*
+*   than 0, which would otherwise throw	*
+*   an exception and crash the program.	*
+*   Also, I added letter menu options	*
+****************************************/
+
 using System;
 
 class Program
@@ -7,6 +22,7 @@ class Program
 		while (true)
 		{
 			// Print menu
+			Console.Clear();
 			Console.WriteLine("Menu Options:");
 			Console.WriteLine("    1/b. Start breathing activity");
 			Console.WriteLine("    2/r. Start reflecting activity");

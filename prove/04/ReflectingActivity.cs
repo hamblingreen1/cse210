@@ -86,22 +86,21 @@ public class ReflectingActivity : Activity
 		Console.WriteLine($"--- {prompt} ---");
 		Console.WriteLine();
 		Console.WriteLine("When you have something in mind, press enter to continue.");
-		Console.WriteLine();
 
 		// Pause and wait for user to press enter
 		Console.ReadLine();
-		Console.Clear();
 
 		// Last instructions
 		Console.WriteLine("Now ponder on each of the following questions as they related to this experience");
 		Console.Write("You may begin in: ");
 		ShowTimer(5);
+		Console.Clear();
 	}
 
 	public void DisplayQuestion(string question)
 	{
 		// Display prompt
-		Console.WriteLine($"> {question}");
-		ShowTimer(10);
+		Console.Write($"> {question} ");
+		ShowTimer(9);
 	}
 }
