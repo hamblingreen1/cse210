@@ -1,4 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 
 public class ListingActivity : Activity
 {
@@ -18,24 +22,12 @@ public class ListingActivity : Activity
 		GetRandomPrompt();
 		Thread.Sleep(3000);
 		
-		Console.WriteLine("Please start listing items: ");
+		// Get list from user
+		List<string> items = GetListFromUser();
 		
-		List<string> items = new List<string>();
-		
-		while (true)
-		{
-			string item = Console.ReadLine();
-
-			if (item == "")
-			{
-				break;
-			}
-			
-			items.Add(item);
-		}
-
+		// Display number of items counted
 		Console.WriteLine();
-		Console.WriteLine($"You listed {items.Count} items.");
+		Console.WriteLine($"You listed {items.Count} items!");
 
 		// Display ending message
 		DisplayEndingMessage();
@@ -44,7 +36,7 @@ public class ListingActivity : Activity
 	public void GetRandomPrompt()
 	{
 		// Define prompts list
-		private List<string> _prompts = new List<string>
+		List<string> _prompts = new List<string>()
 		{
 			"Who are people that you appreciate?",
 			"What are personal strengths of yours?",
@@ -58,12 +50,21 @@ public class ListingActivity : Activity
 		string prompt = _prompts[random.Next(_prompts.Count)];
 
 		// Display prompt
+		Console.WriteLine("Consider the following prompt:");
+		Console.WriteLine();
 		Console.WriteLine($"--- {prompt} ---");
+		Console.WriteLine();
+		Console.WriteLine("When you have something in mind, press enter to continue.");
+		Console.WriteLine();
+
+		// Pause and wait for user to press enter
+		Console.ReadLine();
+		Console.Clear();
 	}
 
 	public List<string> GetListFromUser()
 	{
-		List<string> userList = new List<string>();
+		List<string> items = new List<string>();
 		string input;
 
 		DateTime currentTime = DateTime.Now;
@@ -71,10 +72,13 @@ public class ListingActivity : Activity
 
 		while (currentTime < futureTime)
 		{
-			input = Console.ReadLine
+			input = Console.ReadLine();
 
 			// Update time
 			currentTime = DateTime.Now;
+			items.Add(input);
 		}
+
+		return items;
 	}
 }

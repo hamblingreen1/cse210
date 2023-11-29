@@ -32,8 +32,9 @@ public class Activity
 		Console.WriteLine();
 		Console.WriteLine("Well done!!");
 		Console.WriteLine();
+		Console.Sleep(5000);
 		Console.WriteLine($"You have completed {_duration} seconds of the {_name} Activity.");
-		Thread.Sleep(3000); // Pause for 3 seconds
+		Console.Sleep(5000);
 	}
 
 	// Countdown timer for number of seconds specified
