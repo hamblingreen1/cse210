@@ -1,9 +1,21 @@
+/****************************************
+* eternal quest -- set and complete goals *
+* Author: Bobby Hamblin			*
+*   <hamblingreen@hotmail.com>		*
+* Purpose: Demonstate an application of	*
+*   polymorphism			*
+* Usage: Select option at menu		*
+* Creativity: 				*
+****************************************/
+
 using System;
 
 class Program
 {
-    static void Main(string[] args)
-    {
-        Console.WriteLine("Hello Develop05 World!");
-    }
+	static void Main(string[] args)
+	{
+		// Create new Goal Manager
+		GoalManager goalManager = new GoalManager();
+		goalManager.Start();
+	}
 }
