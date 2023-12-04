@@ -5,7 +5,6 @@
 * Purpose: Demonstate an application of	*
 *   polymorphism			*
 * Usage: Select option at menu		*
-* Creativity: 				*
 ****************************************/
 
 using System;
@@ -16,6 +15,8 @@ class Program
 	{
 		// Create new Goal Manager
 		GoalManager goalManager = new GoalManager();
+
+		// Run program
 		goalManager.Start();
 	}
 }

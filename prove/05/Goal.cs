@@ -2,10 +2,12 @@ using System;
 
 public abstract class Goal
 {
+	// Common attributes of all goals
 	protected string _shortName;
 	protected string _description;
 	protected int _points;
 
+	// Generic goal constructor
 	public Goal(string name, string description, int points)
 	{
 		_shortName = name;
@@ -13,10 +15,13 @@ public abstract class Goal
 		_points = points;
 	}
 
+	// Record event implemented in child goals
 	public abstract int RecordEvent();
 
+	// IsComplete implemented in child goals
 	public abstract bool IsComplete();
 
+	// Get details string for non-checklist goals
 	public virtual string GetDetailsString()
 	{
 		bool isComplete = IsComplete();
@@ -30,5 +35,12 @@ public abstract class Goal
 		}
 	}
 
+	// Return goal name
+	public virtual string GetGoalName()
+	{
+		return _shortName;
+	}
+
+	// String representation implemented in child goals
 	public abstract string GetStringRepresentation();
 }

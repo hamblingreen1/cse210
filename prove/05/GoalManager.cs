@@ -5,19 +5,23 @@ using System.Xml.Schema;
 
 public class GoalManager
 {
+	// Create goals list and score
 	protected List<Goal> _goals = new List<Goal>();
 	protected int _score;
 
+	// Initialize score to 0
 	public GoalManager()
 	{
 		_score = 0;
 	}
 
+	// Start program
 	public void Start()
 	{
 		while (true)
 		{
 			// Print point total
+			DisplayPlayerInfo();
 
 			// Print menu
 			Console.WriteLine("Menu Options:");
@@ -31,6 +35,7 @@ public class GoalManager
 			// Receive user input
 			Console.Write("Select a choice from the menu: ");
 			int choice = int.Parse(Console.ReadLine());
+			Console.WriteLine();
 
 			// Call option's function
 			switch (choice)
@@ -39,7 +44,7 @@ public class GoalManager
 					CreateGoal();
 					break;
 				case 2:
-					ListGoalNames();
+					ListGoalDetails();
 					break;
 				case 3:
 					SaveGoals();
@@ -61,27 +66,36 @@ public class GoalManager
 
 	public void DisplayPlayerInfo()
 	{
+		// Display point total
 		Console.WriteLine($"You have {_score} points.");
+		Console.WriteLine();
 	}
 
 	public void ListGoalNames()
 	{
-		foreach(Goal goal in _goals)
+		// List only goal names
+		for (int i = 1; i <= _goals.Count; i++)
 		{
-			Console.WriteLine(goal.GetDetailsString());
+			Console.WriteLine($"{i}. {_goals[i-1].GetGoalName()}");
 		}
+
+		Console.WriteLine();
 	}
 
 	public void ListGoalDetails()
 	{
-		foreach(Goal goal in _goals)
+		// List goal details
+		for (int i = 1; i <= _goals.Count; i++)
 		{
-			Console.WriteLine(goal.GetDetailsString());
+			Console.WriteLine($"{i}. {_goals[i-1].GetDetailsString()}");
 		}
+
+		Console.WriteLine();
 	}
 
 	public void CreateGoal()
 	{
+		// Menu to create new goal
 		Console.WriteLine("The types of Goals are:");
 		Console.WriteLine("    1. Simple Goal");
 		Console.WriteLine("    2. Eternal Goal");
@@ -90,8 +104,7 @@ public class GoalManager
 
 		int choice = int.Parse(Console.ReadLine());
 
-		int target;
-		int bonus;
+		// Get goal information for all goals
 		Console.Write("What is the name of your goal? ");
 		string shortName = Console.ReadLine();
 		Console.Write("What is a short description of it? ");
@@ -102,21 +115,30 @@ public class GoalManager
 		switch(choice)
 		{
 			case 1:
+				// Create and save simple goal
 				SimpleGoal simpleGoal = new SimpleGoal(shortName, description, points);
 				_goals.Add(simpleGoal);
 				break;
 			case 2:
+				// Create and save eternal goal
 				EternalGoal eternalGoal = new EternalGoal(shortName, description, points);
 				_goals.Add(eternalGoal);
 				break;
 			case 3:
+				// Get checklist goal specific information
 				Console.Write("How many times does this goal need to be accomplished for a bonus? ");
-				target = int.Parse(Console.ReadLine());
-				Console.Write("What is the bonus for accomplishing it that many times?");
-				bonus = int.Parse(Console.ReadLine());
-				ChecklistGoal checklistGoal = new ChecklistGoal(shortName, description, points, target, bonus);
-				break;
+				int target = int.Parse(Console.ReadLine());
+				Console.Write("What is the bonus for accomplishing it that many times? ");
+				int bonus = int.Parse(Console.ReadLine());
 
+				// Create and save checklist goal
+				ChecklistGoal checklistGoal = new ChecklistGoal(shortName, description, points, bonus, target);
+				_goals.Add(checklistGoal);
+				break;
+			default:
+				// Invalid choice
+				Console.WriteLine("Invalid choice.");
+				break;
 		}
 	}
 
@@ -126,17 +148,23 @@ public class GoalManager
 		ListGoalNames();
 
 		// Select goal
-		Console.Write("Which goal did you accomplish?");
+		Console.Write("Which goal did you accomplish? ");
 		int choice = int.Parse(Console.ReadLine());
+		choice--;
 
 		// Run record event method of selected goal
-		_goals[choice].RecordEvent();
+		int points = _goals[choice].RecordEvent();
+		_score += points;
+
+		// Display message
+		Console.WriteLine($"Congratulations! You have earned {points} points!");
+		Console.WriteLine();
 	}
 
 	public void SaveGoals()
 	{
 		// Retrieve goal filename
-		Console.WriteLine("What is the filename for the goal file? ");
+		Console.Write("What is the filename for the goal file? ");
 		string filename = Console.ReadLine();
 
 		using (StreamWriter outputFile = new StreamWriter(filename))
@@ -149,13 +177,16 @@ public class GoalManager
 			{
 				outputFile.WriteLine(goal.GetStringRepresentation());
 			}
+
+			// Finish with blank line
+			outputFile.WriteLine();
 		}
 	}
 
 	public void LoadGoals()
 	{
 		// Retrieve goal filename
-		Console.WriteLine("What is the filename for the goal file? ");
+		Console.Write("What is the filename for the goal file? ");
 		string filename = Console.ReadLine();
 
 		if (File.Exists(filename))
@@ -169,8 +200,6 @@ public class GoalManager
 
 				while ((line = inputFile.ReadLine()) != "")
 				{
-					line = inputFile.ReadLine();
-
 					string goalType, shortName, description;
 					int points;
 
@@ -183,8 +212,8 @@ public class GoalManager
 					switch (goalType)
 					{
 						case "SimpleGoal":
-							points = int.Parse(values[4]);
-							SimpleGoal newSimpleGoal = new SimpleGoal(shortName, description, points);
+							bool isComplete = bool.Parse(values[4]);
+							SimpleGoal newSimpleGoal = new SimpleGoal(shortName, description, points, isComplete);
 							_goals.Add(newSimpleGoal);
 							break;
 						case "EternalGoal":
@@ -194,8 +223,12 @@ public class GoalManager
 						case "ChecklistGoal":
 							int target = int.Parse(values[4]);
 							int bonus = int.Parse(values[5]);
-							ChecklistGoal newChecklistGoal = new ChecklistGoal(shortName, description, points, target, bonus);
+							int amountCompleted = int.Parse(values[6]);
+							ChecklistGoal newChecklistGoal = new ChecklistGoal(shortName, description, points, bonus, target, amountCompleted);
 							_goals.Add(newChecklistGoal);
+							break;
+						default:
+							// Do nothing
 							break;
 					}
 				}
