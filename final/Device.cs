@@ -4,31 +4,49 @@ using System.Threading;
 
 public abstract class Device
 {
-	protected SerialPort _devicePort;
-	protected string _deviceName;
-	protected string _portPath;
+	protected SerialPort _device;
+	protected string _name;
+	protected string _port;
 	protected int _baudRate;
 
 	// Construct basic device
-	public Device(string deviceName)
+	public Device(string name, string port)
 	{
-		_deviceName = deviceName;
+		_name = name;
+		_port = port;
 	}
 
-	// Get device name
-	public string GetDeviceName()
+	// Automatically get baud rate from device
+	public virtual int GetBaudRate(string port)
 	{
-		return _deviceName;
-	}
+		// Create temporary test serial port
+		SerialPort testPort = new SerialPort(port);
 
-	// Get baud rate
-	public abstract int GetBaudRate();
+		// Initialize baud rate to 0
+		int baudRate = 0;
+
+		// Open test port
+		testPort.Open();
+
+		// Get baud rate and close port
+		if (testPort.IsOpen)
+		{
+			baudRate = testPort.BaudRate;
+			testPort.Close();
+		}
+
+		// Dispose of test port
+		testPort.Dispose();
+
+		// Return baud rate
+		return baudRate;
+	}
 
 	// Connect device serial
 	public virtual void Connect()
 	{
 		// Open device serial port
-		_devicePort.Open();
+		_device.Open();
 
 		// Sleep to wait for serial port to stabilize
 		Thread.Sleep(5000);
@@ -38,33 +56,29 @@ public abstract class Device
 	public virtual void Disconnect()
 	{
 		// Close device serial port
-		_devicePort.Close();
+		_device.Close();
+	}
+
+	// Return device name
+	public virtual string GetName()
+	{
+		return _name;
+	}
+
+	// Return device serial port
+	public virtual void Dispose()
+	{
+		_device.Dispose();
 	}
 
 	// Abstract method to send command only
 	public abstract void SendCommand(string command);
 
+	// Abstract method to send command only
+	public abstract void SendCommand(string command, string frequency, string duration);
+
 	// Abstract method to receive data from connected device
 	public abstract void GetData(object sender, SerialDataReceivedEventArgs e);
 
-	// Get list of available ports
-	public List<string> GetAvailablePorts()
-	{
-		// Get string array of available ports
-		List<string> availablePorts = SerialPort.GetPortNames().ToList();
-
-		return availablePorts;
-	}
-
-	// Get next port to be used
-	public string GetNextPort()
-	{
-		// Get available ports
-		List<string> availablePorts = GetAvailablePorts();
-		string nextPort = "";
-
-		// Get next unused port from availablePorts list
-		return nextPort;
-	}
 }
 
